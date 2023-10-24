@@ -4,10 +4,17 @@ import uuid
 from datetime import datetime
 
 
-class BaseModel:
+class BaseModel():
     """Abstract class"""
 
     def __init__(self, *args, **kwargs):
+        """
+            Initializes a new instance of the BaseModel class.
+
+            Args:
+                args.
+                kwargs.
+        """
         date = "%Y-%m-%dT%H:%M:%S.%f"
         if kwargs:
             for key, value in kwargs.items():
