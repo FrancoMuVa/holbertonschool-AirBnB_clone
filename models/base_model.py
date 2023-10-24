@@ -8,9 +8,8 @@ class BaseModel:
     """Abstract class"""
 
     def __init__(self, *args, **kwargs):
-
         date = "%Y-%m-%dT%H:%M:%S.%f"
-        if kwargs:
+        if len(kwargs) > 0:
             for key, value in kwargs.items():
                 if key == '__class__':
                     continue
@@ -23,12 +22,15 @@ class BaseModel:
         self.updated_at = datetime.now()
 
     def __str__(self):
+        """Returns string representation of object"""
         return f'[{self.__class__.__name__}] ({self.id}) {self.__dict__}'
 
     def save(self):
+        """Updates attribute with current datetime"""
         self.updated_at = datetime.now()
 
     def to_dict(self):
+        """Returns dict with all key/value of instance"""
         obj_dict = self.__dict__.copy()
         obj_dict['__class__'] = self.__class__.__name__
         obj_dict['created_at'] = self.created_at.isoformat()
