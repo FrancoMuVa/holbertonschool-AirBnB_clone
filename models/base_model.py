@@ -2,6 +2,7 @@
 """Airbnb clone"""
 import uuid
 from datetime import datetime
+from . import storage
 
 
 class BaseModel():
@@ -35,6 +36,7 @@ class BaseModel():
     def save(self):
         """Updates attribute with current datetime"""
         self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """Returns dict with all key/value of instance"""
