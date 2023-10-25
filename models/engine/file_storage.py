@@ -53,10 +53,9 @@ class FileStorage():
                         "Place": Place,
                         "Review": Review
                     }
-
                     for k, o in item.items():
                         if k == "__class__":
                             self.new(obj_classes[o](**item))
 
-        except FileNotFoundError:
+        except Exception:
             pass
