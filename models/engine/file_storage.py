@@ -1,43 +1,36 @@
 #!/usr/bin/python3
 """
-
+    Class FileStorage
 """
 import json
 
 
 class FileStorage():
     """
-
+        This class manages the storage of objects in a JSON file.
     """
 
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
-        """  """
+        """ Retrieve all stored objects. """
         return self.__objects
-    
+
     def new(self, obj):
-        """  """
-        key = f"{self.__clas__.__name__}.{obj.id}"
-        self.__objects = {key: obj}
-    
+        """ Add a new object to the storage. """
+        key = f"{obj.__class__.__name__}.{obj.id}"
+        self.__objects = {key: obj.to_dict()}
+
     def save(self):
-        """  """
-        with open(self.__file_path, "w", encoding="utf8") as f:
-            dict_f = {}
-            for key, item in self.__objects.items():
-                f_dict[key] = item.to_dict()
-            json.dumps(f_dict, f())
+        """ Save the objects to the JSON file. """
+        with open(self.__file_path, "w") as f:
+            json.dump(self.__objects, f)
 
     def reload(self):
-        """  """
+        """ Reload objects from the JSON file. """
         try:
             with open(self.__file_path, "r") as f:
-                data = json.load(f)
-
-                for key, item in data.items():
-                    self.__objects[key] = item
-                return self.__objects
-        except FileNotFoundError:
+                self.__objects = json.load(f)
+        except Exception:
             pass
