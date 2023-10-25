@@ -54,10 +54,9 @@ class FileStorage():
                         "Review": Review
                     }
 
-                    name_class, obj_class = key.split(".")
-                    if name_class in obj_classes:
-                        obj_class = obj_classes[name_class]
-                        self.new(obj_class(**item))
+                    for k, o in item.items():
+                        if k == "__class__":
+                            self.new(obj_classes[o](**item))
 
         except FileNotFoundError:
             pass
