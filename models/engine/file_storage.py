@@ -20,17 +20,23 @@ class FileStorage():
     def new(self, obj):
         """ Add a new object to the storage. """
         key = f"{obj.__class__.__name__}.{obj.id}"
-        self.__objects = {key: obj.to_dict()}
+        self.__objects = {key: obj}
 
     def save(self):
         """ Save the objects to the JSON file. """
         with open(self.__file_path, "w") as f:
-            json.dump(self.__objects, f)
+            dict_rep = {}
+            for key, item in self.__objects.items():
+                dict_rep[key] = item.to_dict()
+            json.dump(dict_rep, f)
 
     def reload(self):
         """ Reload objects from the JSON file. """
         try:
             with open(self.__file_path, "r") as f:
-                self.__objects = json.load(f)
+                objects = json.load(f)
+                for key, item in objects.items():
+                    from models.base_model import BaseModel
+                    self.new(BaseModel(**item))
         except Exception:
             pass
