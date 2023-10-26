@@ -4,6 +4,13 @@
 """
 import cmd
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -12,8 +19,15 @@ class HBNBCommand(cmd.Cmd):
         interface for the program.
     """
     prompt = "(hbnb) "
-    classes = ["BaseModel", "User", "Place",
-               "State", "Review", "City", "Amenity"]
+    classes = {
+        "BaseModel": BaseModel,
+        "User": User,
+        "Place": Place,
+        "State": State,
+        "Review": Review,
+        "City": City,
+        "Amenity": Amenity
+        }
 
     def do_quit(self, arg):
         """ Quit command to exit the program\n"""
@@ -32,7 +46,8 @@ class HBNBCommand(cmd.Cmd):
         elif arg not in self.classes:
             print("** class doesn't exist **")
         else:
-            instance = eval(arg)()
+            instance = self.classes[arg]()
+            instance.save()
             print(instance.id)
             """ save in storage """
 
@@ -44,30 +59,48 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         elif len(arg) == 1:
             print("** instance id missing **")
-    """ else:
-            search instance in storage and print,
-            handle error if it doesnt exist"""
+        else:
+            for key, value in storage.all().items():
+                key_obj = key.split(".")
+                if key_obj[0] == arg[0] and key_obj[1] == arg[1]:
+                    print(value)
+                    break
+            if key_obj[0] != arg[0] and key_obj[1] != arg[1]:
+                print("** no instance found **")
 
     def do_destroy(self, arg):
+        arg = arg.split()
         if not arg:
             print("** class name missing **")
-        elif arg not in self.classes:
+        elif arg[0] not in self.classes:
             print("** class doesn't exist **")
         elif len(arg) == 1:
             print("** instance id missing **")
-    """ else:
-            search instance in storage and delete it,
-            handle error if it doesnt exist and
-            save change in storage"""
+        else:
+            a = arg[0] + "." + arg[1]
+            if a in storage.all():
+                storage.all().pop(a)
+                storage.save()
+            else:
+                print("** no instance found **")
 
     def do_all(self, arg):
-        arg = arg.split()
-        """ if not arg:
-            search in storage all instances and print them as str """
-        if arg not in self.classes:
-            print("** class doesn't exist **")
-    """ else:
-            search instances of specified class and print them as str"""
+        if not arg:
+            mylist = []
+            for key, value in storage.all().items():
+                mylist.append(value.__str__())
+            print(mylist)
+        else:
+            mylist = []
+            for key, value in storage.all().items():
+                a = key.split(".")
+                if a[0] == arg:
+                    mylist.append(value.__str__())
+            if mylist == []:
+                print("** class doesn't exist **")
+                return
+            else:
+                print(mylist)
 
     def do_update(self, arg):
         arg = arg.split()
