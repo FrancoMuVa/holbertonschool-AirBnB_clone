@@ -2,6 +2,13 @@
 """
     Class FileStorage
 """
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 import json
 
 
@@ -12,6 +19,15 @@ class FileStorage():
 
     __file_path = "file.json"
     __objects = {}
+    obj_classes = {
+        "BaseModel": BaseModel,
+        "User": User,
+        "State": State,
+        "City": City,
+        "Amenity": Amenity,
+        "Place": Place,
+        "Review": Review
+    }
 
     def all(self):
         """ Retrieve all stored objects. """
@@ -36,25 +52,8 @@ class FileStorage():
             with open(self.__file_path, "r") as f:
                 objects = json.load(f)
                 for key, item in objects.items():
-                    from models.base_model import BaseModel
-                    from models.user import User
-                    from models.state import State
-                    from models.city import City
-                    from models.amenity import Amenity
-                    from models.place import Place
-                    from models.review import Review
 
-                    obj_classes = {
-                        "BaseModel": BaseModel,
-                        "User": User,
-                        "State": State,
-                        "City": City,
-                        "Amenity": Amenity,
-                        "Place": Place,
-                        "Review": Review
-                    }
-
-                    obj = (obj_classes[item["__class__"]](**item))
+                    obj = (self.obj_classes[item["__class__"]](**item))
                     self.__objects[key] = obj
 
         except Exception:
