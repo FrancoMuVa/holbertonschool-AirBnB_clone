@@ -54,10 +54,8 @@ class FileStorage():
                         "Review": Review
                     }
 
-                    k, v = key.split(".")
-                    self.__objects[key] = obj_classes[k](**item)
-
-                return self.__objects
+                    obj = (obj_classes[item["__class__"]](**item))
+                    self.__objects[key] = obj
 
         except Exception:
             pass
