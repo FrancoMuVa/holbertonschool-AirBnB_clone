@@ -37,10 +37,27 @@ class FileStorage():
                 objects = json.load(f)
                 for key, item in objects.items():
                     from models.base_model import BaseModel
+                    from models.user import User
+                    from models.state import State
+                    from models.city import City
+                    from models.amenity import Amenity
+                    from models.place import Place
+                    from models.review import Review
+
+                    obj_classes = {
+                        "BaseModel": BaseModel,
+                        "User": User,
+                        "State": State,
+                        "City": City,
+                        "Amenity": Amenity,
+                        "Place": Place,
+                        "Review": Review
+                    }
 
                     k, v = key.split(".")
-                    if k == "BaseModel":
-                        self.new(BaseModel(**item))
+                    self.__objects[key] = obj_classes[k](**item)
+
+                return self.__objects
 
         except Exception:
             pass
