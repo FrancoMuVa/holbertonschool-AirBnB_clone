@@ -1,6 +1,8 @@
 #!/usr/bin/python3
+""" class Amenity"""
 from models.base_model import BaseModel
 
 
 class Amenity(BaseModel):
-    pass
+    """ class that inherits from BaseModel """
+    name = ""
