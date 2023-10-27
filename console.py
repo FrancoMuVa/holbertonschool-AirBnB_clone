@@ -49,10 +49,10 @@ class HBNBCommand(cmd.Cmd):
             instance = self.classes[arg]()
             instance.save()
             print(instance.id)
-            """ save in storage """
 
     def do_show(self, arg):
         arg = arg.split()
+        key_obj = None
         if not arg:
             print("** class name missing **")
         elif arg[0] not in self.classes:
@@ -65,7 +65,8 @@ class HBNBCommand(cmd.Cmd):
                 if key_obj[0] == arg[0] and key_obj[1] == arg[1]:
                     print(value)
                     break
-            if key_obj[0] != arg[0] and key_obj[1] != arg[1]:
+            if key_obj is None or (key_obj[0] != arg[0]
+                                   and key_obj[1] != arg[1]):
                 print("** no instance found **")
 
     def do_destroy(self, arg):
@@ -108,14 +109,20 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif arg[0] not in self.classes:
             print("** class doesn't exist **")
-        elif len(arg) == 1:
+        elif len(arg) < 2:
             print("** instance id missing **")
-        elif len(arg) == 2:
+        elif len(arg) < 3:
             print("** attribute name missing **")
-        elif len(arg) == 3:
+        elif len(arg) < 4:
             print("** value missing **")
-    """ search for specified instance in storage, set attributes if it exists,
-    handle error if it doesnt and save in storage """
+        else:
+            a = arg[0] + "." + arg[1]
+            if a not in storage.all():
+                print("** no instance found **")
+            else:
+                instance = storage.all()[a]
+                setattr(instance, arg[2], arg[3].strip('"\''))
+                instance.save()
 
 
 if __name__ == "__main__":
