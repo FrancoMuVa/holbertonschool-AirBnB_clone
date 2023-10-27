@@ -109,11 +109,11 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif arg[0] not in self.classes:
             print("** class doesn't exist **")
-        elif len(arg) < 2:
+        elif len(arg) == 1:
             print("** instance id missing **")
-        elif len(arg) < 3:
+        elif len(arg) == 2:
             print("** attribute name missing **")
-        elif len(arg) < 4:
+        elif len(arg) == 3:
             print("** value missing **")
         else:
             a = arg[0] + "." + arg[1]
