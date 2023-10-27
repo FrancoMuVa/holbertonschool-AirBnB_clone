@@ -52,7 +52,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, arg):
         arg = arg.split()
-        key_obj = None
         if not arg:
             print("** class name missing **")
         elif arg[0] not in self.classes:
@@ -60,13 +59,10 @@ class HBNBCommand(cmd.Cmd):
         elif len(arg) == 1:
             print("** instance id missing **")
         else:
-            for key, value in storage.all().items():
-                key_obj = key.split(".")
-                if key_obj[0] == arg[0] and key_obj[1] == arg[1]:
-                    print(value)
-                    break
-            if key_obj is None or (key_obj[0] != arg[0]
-                                   and key_obj[1] != arg[1]):
+            a = arg[0] + "." + arg[1]
+            if a in storage.all():
+                print(storage.all()[a])
+            else:
                 print("** no instance found **")
 
     def do_destroy(self, arg):
