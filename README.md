@@ -14,6 +14,17 @@ In our case, we want to be able to manage the objects of our project:
 * Do operations on objects (count, compute stats, etc…)
 * Update attributes of an object
 * Destroy an object
+
+## Resources
+
+- [cmd module](https://docs.python.org/3.4/library/cmd.html)
+- [packages](https://docs.python.org/3.4/tutorial/modules.html#packages)
+- [uuid module](https://docs.python.org/3.4/library/uuid.html)
+- [datetime](https://docs.python.org/3.4/library/datetime.html)
+- [unittest module](https://docs.python.org/3.4/library/unittest.html#module-unittest)
+- [args/kwargs](https://yasoob.me/2013/08/04/args-and-kwargs-in-python-explained/)
+- [python test cheatsheet](https://www.pythonsheets.com/notes/python-tests.html)
+
 ## Installation
 
 To use this console, follow these steps:
