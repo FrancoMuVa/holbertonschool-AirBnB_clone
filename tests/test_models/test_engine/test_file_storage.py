@@ -24,19 +24,38 @@ class TestFileStorage(unittest.TestCase):
         key = f"User.{user.id}"
         self.assertTrue(key in storage.all())
 
-    def testSaveAndReload(self):
+    def testSave(self):
         user = User()
-        user.first_name = "John"
+        user.first_name = "Pepe"
         storage.new(user)
         storage.save()
-        base = BaseModel()
+        key = f"User.{user.id}"
+        self.assertTrue(key in storage.all())
+
+        user2 = User()
+        user2.first_name = "Robert"
+        storage.new(user2)
+        storage.save()
+        key2 = f"User.{user2.id}"
+        self.assertTrue(key2 in storage.all())
+        self.assertTrue(key in storage.all())
+
+    def testReload(self):
+        base_model = BaseModel()
+        key = f"BaseModel.{base_model.id}"
+        storage.new(base_model)
+        storage.save()
+
+        del storage._FileStorage__objects[key]
+
         storage.reload()
-        keyU = f"User.{user.id}"
-        keyB = f"BaseModel.{base.id}"
+        objects = storage.all()
+        self.assertTrue(key in objects)
+        reloaded_object = objects[key]
+        self.assertEqual(reloaded_object.id, base_model.id)
 
-        self.assertTrue(keyU in storage.all())
-        user_reload = storage.all()[keyU]
-        self.assertEqual(user.first_name, user_reload.first_name)
-        self.assertTrue(keyB in storage.all())
-
-        self.assertTrue(base.updated_at > user.updated_at)
+    def testBaseModel(self):
+        base_model = BaseModel()
+        first_updated_at = base_model.updated_at
+        base_model.save()
+        self.assertNotEqual(first_updated_at, base_model.updated_at)
