@@ -2,6 +2,7 @@
 import unittest
 import os
 from models.user import User
+from models.base_model import BaseModel
 from models import storage
 
 
@@ -28,9 +29,14 @@ class TestFileStorage(unittest.TestCase):
         user.first_name = "John"
         storage.new(user)
         storage.save()
+        base = BaseModel()
         storage.reload()
-        key = f"User.{user.id}"
+        keyU = f"User.{user.id}"
+        keyB = f"BaseModel.{base.id}"
 
-        self.assertTrue(key in storage.all())
-        user_reload = storage.all()[key]
+        self.assertTrue(keyU in storage.all())
+        user_reload = storage.all()[keyU]
         self.assertEqual(user.first_name, user_reload.first_name)
+        self.assertTrue(keyB in storage.all())
+
+        self.assertTrue(base.updated_at > user.updated_at)

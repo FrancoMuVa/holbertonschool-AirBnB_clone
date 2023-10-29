@@ -21,7 +21,9 @@ class TestBaseModel(unittest.TestCase):
 
     def testStr(self):
         obj_str = str(self.base_model)
-        self.assertEqual(obj_str, self.base_model.__str__())
+        expected = (f"[BaseModel] ({self.base_model.id}) "
+                    f"{self.base_model.__dict__}")
+        self.assertEqual(obj_str, expected)
 
     def testToDict(self):
         obj_dict = self.base_model.to_dict()
