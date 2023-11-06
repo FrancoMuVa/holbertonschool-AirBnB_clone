@@ -7,6 +7,9 @@ header {
     align-items: center;
 }
 
-header img{
+.AirBnB-logo {
     margin-left: 20px;
+    width: 142px;
+    height: 60px;
+    background: url(https://s3.eu-west-3.amazonaws.com/hbtn.intranet.project.files/holbertonschool-higher-level_programming+/268/logo.png);
 }
